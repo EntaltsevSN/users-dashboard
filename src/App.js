@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css'
+import Dashboard from './components/Dashboard'
+import LoginPage from './components/LoginPage'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchUsers } from './redux/actions';
 
 function App() {
+  const dispatch = useDispatch()
+  
+  React.useEffect(() => {
+    function loadUsers() {
+      dispatch(fetchUsers())
+    }
+
+    loadUsers()
+  }, [dispatch])
+
+  const isLoggedIn = useSelector(state => state.loginReducer)
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {
+        isLoggedIn ? <Dashboard/> : <LoginPage/>
+      }
+    </>
   );
 }
 
